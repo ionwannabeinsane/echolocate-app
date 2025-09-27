@@ -1,6 +1,4 @@
-/* CSS Variables for Theme */
 :root {
-  /* Light Theme */
   --bg-primary: #ffffff;
   --bg-secondary: #f8f9fa;
   --bg-tertiary: #e9ecef;
@@ -19,7 +17,6 @@
 }
 
 [data-theme="dark"] {
-  /* Dark Theme */
   --bg-primary: #1a1a1a;
   --bg-secondary: #2d2d2d;
   --bg-tertiary: #404040;
@@ -37,7 +34,6 @@
   --shadow-lg: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* Reset and Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -52,7 +48,6 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* App Container */
 .app-container {
   min-height: 100vh;
   display: flex;
@@ -60,7 +55,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Flexible Grid System */
 .flex-grid {
   display: flex;
   flex-wrap: wrap;
@@ -72,7 +66,6 @@ body {
   min-width: 250px;
 }
 
-/* Responsive Typography */
 @media (max-width: 768px) {
   html {
     font-size: 14px;
@@ -85,7 +78,6 @@ body {
   }
 }
 
-/* Touch-friendly interactions */
 @media (hover: none) and (pointer: coarse) {
   .nav-item, .btn, .theme-toggle, .bat-mascot {
     min-height: 44px;
@@ -110,7 +102,6 @@ body {
   background-color: transparent;
 }
 
-/* Screen size classes */
 .mobile .header-content {
   flex-direction: column;
   gap: 0.5rem;
@@ -144,7 +135,6 @@ body {
   padding: 3rem;
 }
 
-/* Adaptive spacing */
 @media (max-width: 768px) {
   .app-container {
     padding: 0;
@@ -159,7 +149,6 @@ body {
   }
 }
 
-/* Flexible containers */
 .responsive-container {
   width: 100%;
   max-width: 100%;
@@ -191,7 +180,6 @@ body {
   }
 }
 
-/* Adaptive grid layouts */
 .adaptive-grid {
   display: grid;
   gap: 1rem;
@@ -216,7 +204,6 @@ body {
   }
 }
 
-/* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Rubik', 'Helvetica', 'Arial', sans-serif;
   font-weight: 500;
@@ -242,7 +229,6 @@ h4 {
   margin-bottom: 0.5rem;
 }
 
-/* Responsive text sizing */
 .responsive-text {
   font-size: 1rem;
 }
@@ -283,7 +269,6 @@ h4 {
   }
 }
 
-/* Adaptive button sizing */
 .btn-responsive {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
@@ -303,7 +288,6 @@ h4 {
   }
 }
 
-/* Header */
 .header {
   background-color: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
@@ -337,7 +321,6 @@ h4 {
   align-items: center;
 }
 
-/* Original Bat Mascot */
 .bat-mascot {
   position: relative;
   width: 60px;
@@ -432,7 +415,6 @@ h4 {
   }
 }
 
-/* Small Bat Mascot for FAQ */
 .bat-mascot-small {
   position: relative;
   width: 40px;
@@ -567,7 +549,6 @@ h4 {
   box-shadow: var(--shadow-lg);
 }
 
-/* Main Content */
 .main-content {
   display: flex;
   flex: 1;
@@ -576,7 +557,6 @@ h4 {
   width: 100%;
 }
 
-/* Sidebar */
 .sidebar {
   width: 250px;
   background-color: var(--bg-secondary);
@@ -622,7 +602,6 @@ h4 {
   text-align: center;
 }
 
-/* Content Area */
 .content-area {
   flex: 1;
   padding: 2rem;
@@ -637,7 +616,6 @@ h4 {
   display: block;
 }
 
-/* Calendar Styles */
 .calendar-header {
   display: flex;
   justify-content: space-between;
@@ -715,7 +693,6 @@ h4 {
   color: var(--text-secondary);
 }
 
-/* Assignments Styles */
 .assignments-header {
   display: flex;
   justify-content: space-between;
@@ -870,7 +847,6 @@ h4 {
   opacity: 0.9;
 }
 
-/* Progress Styles */
 .progress-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -912,7 +888,6 @@ h4 {
   color: var(--text-primary);
 }
 
-/* Study Time Styles */
 .study-header {
   display: flex;
   justify-content: space-between;
@@ -1013,7 +988,6 @@ h4 {
   font-size: 0.875rem;
 }
 
-/* Modal Styles */
 .modal {
   display: none;
   position: fixed;
@@ -1111,7 +1085,6 @@ h4 {
   margin-top: 2rem;
 }
 
-/* Notification Styles */
 .notification {
   position: fixed;
   top: 20px;
@@ -1140,9 +1113,7 @@ h4 {
   animation: bat-flap 1s ease-in-out infinite;
 }
 
-/* Responsive Design */
 
-/* Large Desktop (1200px+) */
 @media (min-width: 1200px) {
   .header-content {
     max-width: 1400px;
@@ -1166,7 +1137,6 @@ h4 {
   }
 }
 
-/* Desktop (992px - 1199px) */
 @media (min-width: 992px) and (max-width: 1199px) {
   .content-area {
     padding: 2rem;
@@ -1178,7 +1148,6 @@ h4 {
   }
 }
 
-/* Tablet Landscape (768px - 991px) */
 @media (min-width: 768px) and (max-width: 991px) {
   .header-content {
     padding: 0 1.5rem;
@@ -1254,7 +1223,6 @@ h4 {
   }
 }
 
-/* Tablet Portrait (576px - 767px) */
 @media (min-width: 576px) and (max-width: 767px) {
   .header-content {
     padding: 0 1rem;
@@ -1350,7 +1318,6 @@ h4 {
   }
 }
 
-/* Mobile Landscape (480px - 575px) */
 @media (min-width: 480px) and (max-width: 575px) {
   .header-content {
     padding: 0 0.75rem;
@@ -1477,7 +1444,6 @@ h4 {
   }
 }
 
-/* Mobile Portrait (320px - 479px) */
 @media (max-width: 479px) {
   .header-content {
     padding: 0 0.5rem;

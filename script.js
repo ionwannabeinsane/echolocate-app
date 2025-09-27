@@ -1,4 +1,3 @@
-// StudyBat - Academic Tracker
 class StudyBat {
     constructor() {
         this.assignments = JSON.parse(localStorage.getItem('studybat-assignments')) || [];
@@ -23,24 +22,20 @@ class StudyBat {
         this.renderStudySessions();
         this.checkNotifications();
         
-        // Check for notifications every minute
         setInterval(() => this.checkNotifications(), 60000);
     }
 
     setupEventListeners() {
-        // Theme toggle
         document.getElementById('themeToggle').addEventListener('click', () => {
             this.toggleTheme();
         });
 
-        // Navigation
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', (e) => {
                 this.switchView(e.currentTarget.dataset.view);
             });
         });
 
-        // Calendar navigation
         document.getElementById('prevMonth').addEventListener('click', () => {
             this.currentDate.setMonth(this.currentDate.getMonth() - 1);
             this.renderCalendar();
@@ -69,7 +64,6 @@ class StudyBat {
             this.saveAssignment();
         });
 
-        // Study timer
         document.getElementById('startStudyBtn').addEventListener('click', () => {
             this.startStudySession();
         });
@@ -82,7 +76,6 @@ class StudyBat {
             this.stopStudySession();
         });
 
-        // Filters
         document.getElementById('subjectFilter').addEventListener('change', () => {
             this.renderAssignments();
         });
@@ -91,7 +84,6 @@ class StudyBat {
             this.renderAssignments();
         });
 
-        // Bat mascot interaction
         document.getElementById('batMascot').addEventListener('click', () => {
             this.showBatMessage();
         });
@@ -114,19 +106,16 @@ class StudyBat {
     switchView(view) {
         this.currentView = view;
         
-        // Update navigation
         document.querySelectorAll('.nav-item').forEach(item => {
             item.classList.remove('active');
         });
         document.querySelector(`[data-view="${view}"]`).classList.add('active');
 
-        // Update content
         document.querySelectorAll('.view-container').forEach(container => {
             container.classList.remove('active');
         });
         document.getElementById(`${view}View`).classList.add('active');
 
-        // Update subject filter
         this.updateSubjectFilter();
     }
 
@@ -134,17 +123,14 @@ class StudyBat {
         const calendarGrid = document.getElementById('calendarGrid');
         const currentMonth = document.getElementById('currentMonth');
         
-        // Update month display
         const monthNames = [
             'January', 'February', 'March', 'April', 'May', 'June',
             'July', 'August', 'September', 'October', 'November', 'December'
         ];
         currentMonth.textContent = `${monthNames[this.currentDate.getMonth()]} ${this.currentDate.getFullYear()}`;
 
-        // Clear calendar
         calendarGrid.innerHTML = '';
 
-        // Add day headers
         const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         dayHeaders.forEach(day => {
             const dayHeader = document.createElement('div');
@@ -166,7 +152,6 @@ class StudyBat {
             calendarGrid.appendChild(emptyDay);
         }
 
-        // Add days of month
         for (let day = 1; day <= daysInMonth; day++) {
             const dayElement = document.createElement('div');
             dayElement.className = 'calendar-day';
@@ -179,7 +164,6 @@ class StudyBat {
                 dayElement.classList.add('today');
             }
 
-            // Check for assignments on this day
             const dayAssignments = this.getAssignmentsForDate(dayDate);
             if (dayAssignments.length > 0) {
                 dayElement.classList.add('has-events');
@@ -266,7 +250,6 @@ class StudyBat {
             filteredAssignments = filteredAssignments.filter(a => a.status === statusFilter);
         }
 
-        // Sort by due date
         filteredAssignments.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
 
         assignmentsList.innerHTML = filteredAssignments.map(assignment => `
@@ -391,7 +374,6 @@ class StudyBat {
         document.getElementById('averageGrade').textContent = averageGrade;
         document.getElementById('upcomingDeadlines').textContent = upcomingDeadlines;
 
-        // Update grade breakdown
         this.renderGradeBreakdown();
     }
 
@@ -531,17 +513,16 @@ class StudyBat {
 
     showBatMessage() {
         const messages = [
-            "🦇 Click on FAQ to learn how to use StudyBat!",
-            "🦇 Need help? Check out the FAQ section!",
-            "🦇 I'm here to guide you through your academic journey!",
-            "🦇 Click FAQ to discover all the features!",
-            "🦇 Let me help you get organized with your studies!"
+            "Click on FAQ to learn how to use Echolocate!",
+            "Need help? Check out the FAQ section!",
+            "I'm here to guide you through your academic journey!",
+            "Click FAQ to discover all the features!",
+            "Let me help you get organized with your studies!"
         ];
         
         const randomMessage = messages[Math.floor(Math.random() * messages.length)];
         this.showNotification(randomMessage);
         
-        // Switch to FAQ view after a short delay
         setTimeout(() => {
             this.switchView('faq');
         }, 2000);
@@ -556,8 +537,6 @@ class StudyBat {
     }
 
     filterAssignmentsByDate(date) {
-        // This would filter assignments by the selected date
-        // Implementation depends on your specific needs
         console.log('Filtering assignments for date:', date);
     }
 
@@ -576,7 +555,6 @@ class StudyBat {
             };
         });
 
-        // Create ICS file content
         let icsContent = 'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//StudyBat//Academic Tracker//EN\n';
         
         events.forEach(event => {
@@ -592,7 +570,6 @@ class StudyBat {
         
         icsContent += 'END:VCALENDAR';
 
-        // Download the file
         const blob = new Blob([icsContent], { type: 'text/calendar' });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -607,37 +584,32 @@ class StudyBat {
     }
 
     setupResponsiveFeatures() {
-        // Handle window resize
         window.addEventListener('resize', () => {
             this.handleResize();
         });
 
-        // Handle orientation change on mobile
         window.addEventListener('orientationchange', () => {
             setTimeout(() => {
                 this.handleResize();
             }, 100);
         });
 
-        // Touch-friendly interactions
         if ('ontouchstart' in window) {
             document.body.classList.add('touch-device');
         }
 
-        // Detect screen size and adjust layout
         this.updateLayoutForScreenSize();
     }
 
     handleResize() {
         this.updateLayoutForScreenSize();
-        this.renderCalendar(); // Re-render calendar to adjust to new size
+        this.renderCalendar();
     }
 
     updateLayoutForScreenSize() {
         const width = window.innerWidth;
         const body = document.body;
         
-        // Remove existing size classes
         body.classList.remove('mobile', 'tablet', 'desktop', 'large-desktop');
         
         if (width < 480) {
@@ -650,7 +622,6 @@ class StudyBat {
             body.classList.add('large-desktop');
         }
 
-        // Adjust calendar grid for very small screens
         if (width < 400) {
             const calendarGrid = document.getElementById('calendarGrid');
             if (calendarGrid) {
@@ -659,7 +630,6 @@ class StudyBat {
         }
     }
 
-    // Enhanced mobile navigation
     setupMobileNavigation() {
         const navItems = document.querySelectorAll('.nav-item');
         const isMobile = window.innerWidth < 768;
@@ -667,7 +637,6 @@ class StudyBat {
         if (isMobile) {
             navItems.forEach(item => {
                 item.addEventListener('click', () => {
-                    // Close any open modals on mobile
                     document.getElementById('assignmentModal').classList.remove('active');
                 });
             });
@@ -675,5 +644,4 @@ class StudyBat {
     }
 }
 
-// Initialize the app
 const studyBat = new StudyBat();
