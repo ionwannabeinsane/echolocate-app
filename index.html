@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echolocate - Academic Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="bat-mascot" id="batMascot">
+                        <div class="bat-body"></div>
+                        <div class="bat-wing bat-wing-left"></div>
+                        <div class="bat-wing bat-wing-right"></div>
+                        <div class="bat-ears">
+                            <div class="bat-ear bat-ear-left"></div>
+                            <div class="bat-ear bat-ear-right"></div>
+                        </div>
+                    </div>
+                    <h1>Echolocate</h1>
+                </div>
+                <div class="header-controls">
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <button class="export-btn" id="exportBtn" onclick="studyBat.exportToCalendar()">
+                        <i class="fas fa-download"></i>
+                        Export Calendar
+                    </button>
+                    <button class="add-assignment-btn" id="addAssignmentBtn">
+                        <i class="fas fa-plus"></i>
+                        Add Assignment
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <nav class="nav-menu">
+                    <button class="nav-item active" data-view="calendar">
+                        <i class="fas fa-calendar-alt"></i>
+                        Calendar
+                    </button>
+                    <button class="nav-item" data-view="assignments">
+                        <i class="fas fa-tasks"></i>
+                        Assignments
+                    </button>
+                    <button class="nav-item" data-view="progress">
+                        <i class="fas fa-chart-line"></i>
+                        Progress
+                    </button>
+                    <button class="nav-item" data-view="study">
+                        <i class="fas fa-clock"></i>
+                        Study Time
+                    </button>
+                    <button class="nav-item" data-view="faq">
+                        <i class="fas fa-question-circle"></i>
+                        FAQ
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Calendar View -->
+                <div class="view-container active" id="calendarView">
+                    <div class="calendar-header">
+                        <button class="nav-btn" id="prevMonth">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h2 id="currentMonth"></h2>
+                        <button class="nav-btn" id="nextMonth">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
+
+                <!-- Assignments View -->
+                <div class="view-container" id="assignmentsView">
+                    <div class="assignments-header">
+                        <h2>My Assignments</h2>
+                        <div class="filter-controls">
+                            <select id="subjectFilter">
+                                <option value="">All Subjects</option>
+                            </select>
+                            <select id="statusFilter">
+                                <option value="">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="assignments-list" id="assignmentsList"></div>
+                </div>
+
+                <!-- Progress View -->
+                <div class="view-container" id="progressView">
+                    <div class="progress-header">
+                        <h2>Academic Progress</h2>
+                    </div>
+                    <div class="progress-stats">
+                        <div class="stat-card">
+                            <h3>Completion Rate</h3>
+                            <div class="stat-value" id="completionRate">0%</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Average Grade</h3>
+                            <div class="stat-value" id="averageGrade">N/A</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Upcoming Deadlines</h3>
+                            <div class="stat-value" id="upcomingDeadlines">0</div>
+                        </div>
+                    </div>
+                    <div class="grade-breakdown">
+                        <h3>Grade Breakdown by Subject</h3>
+                        <div id="gradeBreakdown"></div>
+                    </div>
+                </div>
+
+                <!-- Study Time View -->
+                <div class="view-container" id="studyView">
+                    <div class="study-header">
+                        <h2>Study Time Tracker</h2>
+                        <button class="study-btn" id="startStudyBtn">
+                            <i class="fas fa-play"></i>
+                            Start Study Session
+                        </button>
+                    </div>
+                    <div class="study-timer" id="studyTimer">
+                        <div class="timer-display">00:00:00</div>
+                        <div class="timer-controls">
+                            <button class="timer-btn" id="pauseTimer">Pause</button>
+                            <button class="timer-btn" id="stopTimer">Stop</button>
+                        </div>
+                    </div>
+                    <div class="study-sessions" id="studySessions"></div>
+                </div>
+
+                <!-- FAQ View -->
+                <div class="view-container" id="faqView">
+                    <div class="faq-header">
+                        <h2>Frequently Asked Questions</h2>
+                        <div class="bat-speech">
+                            <div class="bat-mascot-small">
+                                <div class="bat-body-small"></div>
+                                <div class="bat-wing-small bat-wing-left-small"></div>
+                                <div class="bat-wing-small bat-wing-right-small"></div>
+                                <div class="bat-ears-small">
+                                    <div class="bat-ear-small bat-ear-left-small"></div>
+                                    <div class="bat-ear-small bat-ear-right-small"></div>
+                                </div>
+                            </div>
+                            <div class="speech-bubble">
+                                <p>Need help? I'm here to guide you through Echolocate! 🦇</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-section">
+                            <h3>Getting Started</h3>
+                            <div class="faq-item">
+                                <h4>How do I add my first assignment?</h4>
+                                <p>Click the "Add Assignment" button in the header, fill in the details, and click "Save Assignment". It's that simple!</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4>How do I navigate the calendar?</h4>
+                                <p>Use the arrow buttons to move between months. Click on any day to see assignments due on that date.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-section">
+                            <h3>Assignment Management</h3>
+                            <div class="faq-item">
+                                <h4>How do I track my progress?</h4>
+                                <p>Mark assignments as "In Progress" when you start working, then "Completed" when finished. You can also add grades!</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4>Can I attach files to assignments?</h4>
+                                <p>Yes! When adding an assignment, you can attach multiple files using the file input field.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-section">
+                            <h3>Study Time Tracking</h3>
+                            <div class="faq-item">
+                                <h4>How does the study timer work?</h4>
+                                <p>Click "Start Study Session" to begin timing. You can pause and resume as needed. When done, click "Stop" to save your session.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4>Can I track study time by subject?</h4>
+                                <p>Absolutely! When you stop a study session, you can specify which subject you were studying.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-section">
+                            <h3>Calendar & Export</h3>
+                            <div class="faq-item">
+                                <h4>How do I export my assignments to my calendar?</h4>
+                                <p>Click "Export Calendar" in the header to download an .ics file that you can import into Google Calendar, Outlook, or Apple Calendar.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4>Will my data be saved?</h4>
+                                <p>Yes! All your assignments, study sessions, and preferences are saved locally in your browser.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-section">
+                            <h3>Tips & Tricks</h3>
+                            <div class="faq-item">
+                                <h4>How can I stay organized?</h4>
+                                <p>Use the priority levels (High, Medium, Low) and filter assignments by subject or status to stay on top of your work!</p>
+                            </div>
+                            <div class="faq-item">
+                                <h4>What's the best way to use Echolocate?</h4>
+                                <p>Start by adding all your assignments, then use the calendar to plan your study time. Track your progress and celebrate your achievements!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Assignment Modal -->
+    <div class="modal" id="assignmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Assignment</h3>
+                <button class="close-btn" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="assignment-form" id="assignmentForm">
+                <div class="form-group">
+                    <label for="assignmentTitle">Title</label>
+                    <input type="text" id="assignmentTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="assignmentSubject">Subject</label>
+                    <input type="text" id="assignmentSubject" required>
+                </div>
+                <div class="form-group">
+                    <label for="assignmentDueDate">Due Date</label>
+                    <input type="datetime-local" id="assignmentDueDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="assignmentPriority">Priority</label>
+                    <select id="assignmentPriority">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="assignmentDescription">Description</label>
+                    <textarea id="assignmentDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="assignmentFile">Attach File</label>
+                    <input type="file" id="assignmentFile" multiple>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelAssignment">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Assignment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <i class="fas fa-bat"></i>
+            <span id="notificationText"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
