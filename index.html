@@ -97,6 +97,38 @@
                             </select>
                         </div>
                     </div>
+                    <div class="progress-timer-section" id="progressTimerSection" style="display: none;">
+                        <div class="progress-timer-card">
+                            <h3>Assignment Progress Timer</h3>
+                            <div class="timer-info">
+                                <div class="assignment-timer-info">
+                                    <span id="timerAssignmentTitle"></span>
+                                    <span id="timerExpectedTime"></span>
+                                </div>
+                                <div class="timer-display-large" id="timerDisplayLarge">00:00:00</div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="progressFill"></div>
+                                    </div>
+                                    <div class="progress-text" id="progressText">0% Complete</div>
+                                </div>
+                            </div>
+                            <div class="timer-controls">
+                                <button class="btn btn-success" id="startAssignmentTimer">
+                                    <i class="fas fa-play"></i> Start Work
+                                </button>
+                                <button class="btn btn-warning" id="pauseAssignmentTimer">
+                                    <i class="fas fa-pause"></i> Pause
+                                </button>
+                                <button class="btn btn-danger" id="stopAssignmentTimer">
+                                    <i class="fas fa-stop"></i> Stop
+                                </button>
+                                <button class="btn btn-secondary" id="closeProgressTimer">
+                                    <i class="fas fa-times"></i> Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="assignments-list" id="assignmentsList"></div>
                 </div>
 
@@ -258,6 +290,10 @@
                 <div class="form-group">
                     <label for="assignmentDescription">Description</label>
                     <textarea id="assignmentDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="assignmentExpectedTime">Expected Work Time (minutes)</label>
+                    <input type="number" id="assignmentExpectedTime" min="1" placeholder="e.g., 120 for 2 hours">
                 </div>
                 <div class="form-group">
                     <label for="assignmentFile">Attach File</label>

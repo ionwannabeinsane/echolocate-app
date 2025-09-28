@@ -8,6 +8,10 @@ class StudyBat {
         this.studyTimer = null;
         this.studyStartTime = null;
         this.studyPausedTime = 0;
+        this.assignmentTimer = null;
+        this.assignmentStartTime = null;
+        this.assignmentPausedTime = 0;
+        this.currentAssignmentId = null;
         
         this.init();
     }
@@ -86,6 +90,22 @@ class StudyBat {
 
         document.getElementById('batMascot').addEventListener('click', () => {
             this.showBatMessage();
+        });
+
+        document.getElementById('startAssignmentTimer').addEventListener('click', () => {
+            this.startAssignmentTimer();
+        });
+
+        document.getElementById('pauseAssignmentTimer').addEventListener('click', () => {
+            this.pauseAssignmentTimer();
+        });
+
+        document.getElementById('stopAssignmentTimer').addEventListener('click', () => {
+            this.stopAssignmentTimer();
+        });
+
+        document.getElementById('closeProgressTimer').addEventListener('click', () => {
+            this.closeProgressTimer();
         });
     }
 
@@ -215,8 +235,10 @@ class StudyBat {
             dueDate: document.getElementById('assignmentDueDate').value,
             priority: document.getElementById('assignmentPriority').value,
             description: document.getElementById('assignmentDescription').value,
+            expectedTime: parseInt(document.getElementById('assignmentExpectedTime').value) || null,
             status: 'pending',
             grade: null,
+            timeSpent: 0,
             files: Array.from(files).map(file => ({
                 name: file.name,
                 size: file.size,
@@ -271,6 +293,18 @@ class StudyBat {
                         <label>Status</label>
                         <span>${assignment.status}</span>
                     </div>
+                    ${assignment.expectedTime ? `
+                    <div class="assignment-detail">
+                        <label>Expected Time</label>
+                        <span>${this.formatTime(assignment.expectedTime * 60)}</span>
+                    </div>
+                    ` : ''}
+                    ${assignment.timeSpent > 0 ? `
+                    <div class="assignment-detail">
+                        <label>Time Spent</label>
+                        <span>${this.formatTime(assignment.timeSpent)}</span>
+                    </div>
+                    ` : ''}
                     ${assignment.grade ? `
                     <div class="assignment-detail">
                         <label>Grade</label>
@@ -305,6 +339,11 @@ class StudyBat {
                     ${assignment.status === 'in-progress' ? `
                         <button class="btn btn-primary" onclick="studyBat.updateAssignmentStatus('${assignment.id}', 'completed')">
                             <i class="fas fa-check"></i> Complete
+                        </button>
+                    ` : ''}
+                    ${assignment.expectedTime ? `
+                        <button class="btn btn-info" onclick="studyBat.startAssignmentProgressTimer('${assignment.id}')">
+                            <i class="fas fa-clock"></i> Timer
                         </button>
                     ` : ''}
                     <button class="btn btn-secondary" onclick="studyBat.editAssignment('${assignment.id}')">
@@ -483,6 +522,115 @@ class StudyBat {
                 </div>
             </div>
         `).join('');
+    }
+
+    startAssignmentProgressTimer(assignmentId) {
+        const assignment = this.assignments.find(a => a.id === assignmentId);
+        if (!assignment || !assignment.expectedTime) {
+            this.showNotification('This assignment needs an expected time to use the progress timer!');
+            return;
+        }
+
+        this.currentAssignmentId = assignmentId;
+        this.assignmentStartTime = new Date();
+        this.assignmentPausedTime = 0;
+        
+        document.getElementById('timerAssignmentTitle').textContent = assignment.title;
+        document.getElementById('timerExpectedTime').textContent = `Expected: ${this.formatTime(assignment.expectedTime * 60)}`;
+        document.getElementById('progressTimerSection').style.display = 'block';
+        
+        this.assignmentTimer = setInterval(() => this.updateAssignmentTimer(), 1000);
+        this.showNotification('Assignment progress timer started!');
+    }
+
+    startAssignmentTimer() {
+        if (this.assignmentTimer) return;
+        
+        this.assignmentStartTime = new Date();
+        this.assignmentTimer = setInterval(() => this.updateAssignmentTimer(), 1000);
+        document.getElementById('startAssignmentTimer').style.display = 'none';
+        document.getElementById('pauseAssignmentTimer').style.display = 'inline-flex';
+    }
+
+    pauseAssignmentTimer() {
+        if (this.assignmentTimer) {
+            clearInterval(this.assignmentTimer);
+            this.assignmentTimer = null;
+            this.assignmentPausedTime += new Date() - this.assignmentStartTime;
+            document.getElementById('pauseAssignmentTimer').textContent = 'Resume';
+            this.showNotification('Assignment timer paused!');
+        } else {
+            this.assignmentStartTime = new Date();
+            this.assignmentTimer = setInterval(() => this.updateAssignmentTimer(), 1000);
+            document.getElementById('pauseAssignmentTimer').textContent = 'Pause';
+            this.showNotification('Assignment timer resumed!');
+        }
+    }
+
+    stopAssignmentTimer() {
+        if (this.assignmentTimer) {
+            clearInterval(this.assignmentTimer);
+            this.assignmentTimer = null;
+        }
+        
+        const totalTime = this.assignmentPausedTime + (this.assignmentStartTime ? new Date() - this.assignmentStartTime : 0);
+        
+        if (totalTime > 0 && this.currentAssignmentId) {
+            const assignment = this.assignments.find(a => a.id === this.currentAssignmentId);
+            if (assignment) {
+                assignment.timeSpent += Math.round(totalTime / 1000);
+                this.saveAssignments();
+                this.renderAssignments();
+                this.showNotification(`Time logged: ${this.formatTime(Math.round(totalTime / 1000))}`);
+            }
+        }
+        
+        this.resetAssignmentTimer();
+    }
+
+    resetAssignmentTimer() {
+        this.assignmentTimer = null;
+        this.assignmentStartTime = null;
+        this.assignmentPausedTime = 0;
+        document.getElementById('startAssignmentTimer').style.display = 'inline-flex';
+        document.getElementById('pauseAssignmentTimer').style.display = 'none';
+        document.getElementById('pauseAssignmentTimer').textContent = 'Pause';
+        document.getElementById('timerDisplayLarge').textContent = '00:00:00';
+        document.getElementById('progressFill').style.width = '0%';
+        document.getElementById('progressText').textContent = '0% Complete';
+    }
+
+    updateAssignmentTimer() {
+        const now = new Date();
+        const elapsed = this.assignmentPausedTime + (now - this.assignmentStartTime);
+        const elapsedSeconds = Math.floor(elapsed / 1000);
+        
+        document.getElementById('timerDisplayLarge').textContent = this.formatTime(elapsedSeconds);
+        
+        if (this.currentAssignmentId) {
+            const assignment = this.assignments.find(a => a.id === this.currentAssignmentId);
+            if (assignment && assignment.expectedTime) {
+                const expectedSeconds = assignment.expectedTime * 60;
+                const progress = Math.min((elapsedSeconds / expectedSeconds) * 100, 100);
+                
+                document.getElementById('progressFill').style.width = `${progress}%`;
+                document.getElementById('progressText').textContent = `${Math.round(progress)}% Complete`;
+                
+                if (progress >= 100) {
+                    this.showNotification('Great job! You\'ve reached your expected time goal!');
+                } else if (progress >= 75) {
+                    this.showNotification('You\'re almost there! Keep going!');
+                }
+            }
+        }
+    }
+
+    closeProgressTimer() {
+        if (this.assignmentTimer) {
+            this.stopAssignmentTimer();
+        }
+        document.getElementById('progressTimerSection').style.display = 'none';
+        this.currentAssignmentId = null;
     }
 
     checkNotifications() {

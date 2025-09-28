@@ -738,6 +738,97 @@ h4 {
   color: var(--text-primary);
 }
 
+.progress-timer-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.progress-timer-card {
+  text-align: center;
+}
+
+.progress-timer-card h3 {
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+}
+
+.timer-info {
+  margin-bottom: 2rem;
+}
+
+.assignment-timer-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: var(--bg-tertiary);
+  border-radius: 8px;
+}
+
+.assignment-timer-info span:first-child {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.assignment-timer-info span:last-child {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.timer-display-large {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  margin-bottom: 1.5rem;
+  font-family: 'Rubik', 'Helvetica', 'Arial', sans-serif;
+}
+
+.progress-bar-container {
+  margin-bottom: 1rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background-color: var(--bg-tertiary);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--success-color), var(--accent-color));
+  border-radius: 6px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+.progress-text {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.timer-controls .btn {
+  min-width: 120px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+}
+
 .assignments-list {
   display: flex;
   flex-direction: column;
@@ -869,6 +960,15 @@ h4 {
 }
 
 .btn-danger:hover {
+  opacity: 0.9;
+}
+
+.btn-info {
+  background-color: var(--info-color);
+  color: white;
+}
+
+.btn-info:hover {
   opacity: 0.9;
 }
 
